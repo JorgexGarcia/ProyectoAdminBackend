@@ -2,4 +2,14 @@ npm init
 npm i express@VersionEnConcreto --save
 sudo npm i mongoose
 npm i dotenv = para leer archivos .env  
-    -require ('dotenv').config(); //Para que lea y compile el arcihvo .env, escribirlo en index
+    - require ('dotenv').config(); //Para que lea y compile el arcihvo .env, escribirlo en index
+-Get para traerte solo los campos que te interesan 
+    - const usuarios = await Usuario.find({}, 'nombre email role google');
+-Para cambiar el nombre a un atributo o no visualizar uno que no quieres
+    UsuarioSchema.method('toJSON', function() {
+        const {__v, _id, ...object} = this.toObject();
+        object.uid = _id;
+        return object;
+    })
+-npm i express-validator = para validator  
+-npm i bcryptjs = para encriptar contraseñas
