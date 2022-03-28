@@ -1,0 +1,5 @@
+npm init
+npm i express@VersionEnConcreto --save
+sudo npm i mongoose
+npm i dotenv = para leer archivos .env  
+    -require ('dotenv').config(); //Para que lea y compile el arcihvo .env, escribirlo en index
