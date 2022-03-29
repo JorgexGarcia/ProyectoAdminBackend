@@ -13,3 +13,30 @@ npm i dotenv = para leer archivos .env
     })
 -npm i express-validator = para validator  
 -npm i bcryptjs = para encriptar contraseñas
+-Para hacer relaciones de cuentas , si pido un hospital , me mueste el usuario con el .populate
+         const hospitales = await Hospital.find()
+        .populate('usuario', ['nombre', 'email']);
+-Paginacion: en la url le pones ?"nombreVariable"="valor" y en el codigo:
+    //Paginación
+    const desde = Number(req.query.desde) || 0;
+    
+    const usuarios = await Usuario.find({}, 'nombre email role google')
+                .skip( desde ) // para decirle que se salte los anteriores
+                .limit( 5 ); // cuantos a mostrar
+-Saber el total de registros en mongo  =  const total = await Usuario.count();
+-Cuando vas hacer varias promesas simultaneas, independientes pero te interesa 
+    que no siga hasta que no haces todas, se puede hacer un Promise.all y luego desestructuras el Array
+    para decirle el nombre de las const resultantes:
+            /Ejecutar varias promesas de forma simultania y luego se espera a realizar todas 
+            const [ usuarios, total ] = await Promise.all ([
+                Usuario.find({}, 'nombre email role google')
+                    .skip( desde )
+                    .limit( 5 ),
+                
+                Usuario.count()
+            ]);
+-Busquedas en mongo que contengan :  const regex = new RegExp(campo, 'i');
+                                    const [usuario , medicos , hospitales] = await Promise.all ([
+                                            Usuario.find({nombre: regex})               ]);
+-para subir archivos express-fileupload = npm i express-fileupload
+-para generar identificadores unicos uuid = npm i uuid
