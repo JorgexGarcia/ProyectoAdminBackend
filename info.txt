@@ -40,3 +40,4 @@ npm i dotenv = para leer archivos .env
                                             Usuario.find({nombre: regex})               ]);
 -para subir archivos express-fileupload = npm i express-fileupload
 -para generar identificadores unicos uuid = npm i uuid
+-Auth de google = https://developers.google.com/identity/sign-in/web/sign-in

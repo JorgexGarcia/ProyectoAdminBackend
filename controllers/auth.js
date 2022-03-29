@@ -1,6 +1,7 @@
 const Usuario = require('../models/usuario');
 const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
+const { verifyGoogle } = require('../helpers/google-verify');
 
 
 const login = async (req, res) => {
@@ -50,6 +51,32 @@ const login = async (req, res) => {
 
 }
 
+const loginGoogle = async (req, res) => {
+
+    const token = req.body.token;
+
+    console.log(token)
+
+    try {
+
+        await verifyGoogle(token);  
+
+        res.json({
+            ok: true,
+            msg: 'Google ok'
+        })
+
+        
+    } catch (error) {
+        res.status(500).json({
+            ok:false,
+            msg: 'Hable con el administrador'
+        })
+    }
+
+}
+
 module.exports = {
-    login
+    login,
+    loginGoogle
 }
