@@ -20,8 +20,7 @@ const HospitalSchema = Schema ({
 
 //Para cambiar el nombre a un atributo o no visualizar uno que no quieres
 HospitalSchema.method('toJSON', function() {
-    const {__v, _id , ...object} = this.toObject();
-    object.uid = _id;
+    const {__v, ...object} = this.toObject();
     return object;
 })
 

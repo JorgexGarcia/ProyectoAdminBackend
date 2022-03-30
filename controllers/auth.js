@@ -22,12 +22,20 @@ const login = async (req, res) => {
                     });
         }
 
+        //Si es usuario de google
+        if(usuarioDB.google){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Tienes que hacer login con Google'
+            });
+        }
+
 
         //Verificar contraseña
         const validPassword = bcrypt.compareSync(password, usuarioDB.password);
 
         if(!validPassword){
-            return res.status(400).json({
+            return res.status(401).json({
                 ok: false,
                 msg: 'Error de login'
             });
@@ -53,21 +61,45 @@ const login = async (req, res) => {
 
 const loginGoogle = async (req, res) => {
 
-    const token = req.body.token;
-
-    console.log(token)
+    const tokenGoogle = req.body.token;
 
     try {
 
-        await verifyGoogle(token);  
+        const { name, email, picture} = await verifyGoogle(tokenGoogle);  
+
+        //Verificar si ya existe en la BD
+        const existeUsuario = await Usuario.findOne({email});
+
+        let user;
+
+        if(existeUsuario){
+            user = existeUsuario;
+            user.google = true;
+
+        }else{
+            user = new Usuario({
+                nombre: name, 
+                email: email,
+                password: '@',
+                img: picture,
+                google: true
+            })
+        }
+
+        //Guardar en la BD
+        await user.save();
+
+        //Genera Token
+        const token = await generarJWT(user.id);
 
         res.json({
             ok: true,
-            msg: 'Google ok'
+            token
         })
 
         
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             ok:false,
             msg: 'Hable con el administrador'
@@ -76,7 +108,21 @@ const loginGoogle = async (req, res) => {
 
 }
 
+const renewToken = async (req, res) => {
+
+    const uid = req.uid;
+
+    //Genera Token
+    const token = await generarJWT(uid);
+
+    res.json({
+        ok: true,
+        token
+    })
+}
+
 module.exports = {
     login,
-    loginGoogle
+    loginGoogle,
+    renewToken
 }

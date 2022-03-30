@@ -18,10 +18,15 @@ router.post('/',
 );
 
 router.put( '/:id',
-    [], actualizarHospital
+    [
+        validarJWT,
+        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        validarCampos
+    ], actualizarHospital
 );
 
 router.delete( '/:id',
+    validarJWT,
     eliminarHospital
 );
 
