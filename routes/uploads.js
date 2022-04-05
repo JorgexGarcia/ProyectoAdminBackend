@@ -10,6 +10,6 @@ router.use(expressFileUpload());
 
 router.put('/:tabla/:id', validarJWT, cargarArchivo );
 
-router.get('/:tabla/:foto', validarJWT, descargarArchivo );
+router.get('/:tabla/:foto', descargarArchivo );
 
 module.exports = router;
